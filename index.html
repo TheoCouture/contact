@@ -77,7 +77,6 @@
       QUnit.test("list tests", function (assert) {
 
           var ContactList = Contact.Contacts.instance().iterator();
-          console.log(ContactList);
           var i = 0;
           while (ContactList.hasNext()){
               var contact = ContactList.next();
@@ -107,7 +106,18 @@
       });
 
       QUnit.test("remove contact tests", function (assert) {
-        assert.ok(false);
+
+          var ContactList = Contact.Contacts.instance().iterator();
+          var buttonfirst = "#button_" + ContactList.first().id();
+          console.log(buttonfirst);
+          $(buttonfirst).click();
+
+
+          var ContactList = Contact.Contacts.instance().iterator();
+          var buttonfirst2 = "#button_" + ContactList.first().id();
+
+          assert.ok(buttonfirst != buttonfirst2)
+
       });
 
       QUnit.test("sort contact tests", function (assert) {
