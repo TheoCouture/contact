@@ -121,7 +121,16 @@
       });
 
       QUnit.test("sort contact tests", function (assert) {
-        assert.ok(false);
+
+          $('#button_sort').click();
+
+          var ContactList = Contact.Contacts.instance().sort();
+
+          console.log(ContactList[0]);
+
+          assert.ok($('td#cellFirstName')[0].innerHTML == ContactList[0].firstName());
+          assert.ok($('td#cellLastName')[0].innerHTML == ContactList[0].lastName());
+
       });
     </script>
     <!-- END - Les tests -->
