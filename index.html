@@ -29,109 +29,109 @@
 
     <!-- BEGIN - La fonction de construction -->
     <script>
-      var build = function () {
-        var model = new Contact.Model();
-        var view = new Contact.View(model);
-        var controller = new Contact.Controller(model, view);
-      };
+        var build = function () {
+            var model = new Contact.Model();
+            var view = new Contact.View(model);
+            var controller = new Contact.Controller(model, view);
+        };
 
-      var init = function () {
-        var contact = new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Eric', 'RAMAT', '0616642258');
+        var init = function () {
+            var contact = new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Eric', 'RAMAT', '0616642258');
 
-        contact.addPhone(new Contact.Phone('0321465676', Contact.PhoneCategory.PRO, Contact.PhoneType.PHONE));
-        contact.addMail(new Contact.Mail('ramat@lisic.univ-littoral.fr', Contact.MailCategory.PRO));
-        contact.addMail(new Contact.Mail('eric.ramat@gmail.com', Contact.MailCategory.PERSO));
-        contact.addTag('prof');
-        Contact.Contacts.instance().add(contact);
-        Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Jacques', 'DURAND', '0699785487'));
-        Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Pierre', 'DUPONT', '0636532535'));
-        Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Jean', 'DUPOND', '0612343000'));
-      }
+            contact.addPhone(new Contact.Phone('0321465676', Contact.PhoneCategory.PRO, Contact.PhoneType.PHONE));
+            contact.addMail(new Contact.Mail('ramat@lisic.univ-littoral.fr', Contact.MailCategory.PRO));
+            contact.addMail(new Contact.Mail('eric.ramat@gmail.com', Contact.MailCategory.PERSO));
+            contact.addTag('prof');
+            Contact.Contacts.instance().add(contact);
+            Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Jacques', 'DURAND', '0699785487'));
+            Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Pierre', 'DUPONT', '0636532535'));
+            Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Jean', 'DUPOND', '0612343000'));
+        }
     </script>
     <!-- END - La fonction de construction -->
 
     <script>
-      $(document).ready(function () {
-        init();
-        build();
-      });
+        $(document).ready(function () {
+            init();
+            build();
+        });
     </script>
 
     <!-- BEGIN - Les tests -->
     <script>
-      QUnit.test("header tests", function (assert) {
-          assert.ok($('#cellFirstName')[0].innerHTML == "First name");
-          assert.ok($('#cellLastName')[0].innerHTML == "Last name");
-          assert.ok($('#cellPhones')[0].innerHTML == "Phones");
-          assert.ok($('#cellMails')[0].innerHTML == "Mails");
-          assert.ok($('#cellTags')[0].innerHTML == "Tags");
-          assert.ok($('#cellActions')[0].innerHTML == "Actions");
+        QUnit.test("header tests", function (assert) {
+            assert.ok($('#cellFirstName')[0].innerHTML == "First name");
+            assert.ok($('#cellLastName')[0].innerHTML == "Last name");
+            assert.ok($('#cellPhones')[0].innerHTML == "Phones");
+            assert.ok($('#cellMails')[0].innerHTML == "Mails");
+            assert.ok($('#cellTags')[0].innerHTML == "Tags");
+            assert.ok($('#cellActions')[0].innerHTML == "Actions");
 
 
-      });
+        });
 
-      QUnit.test("list tests", function (assert) {
+        QUnit.test("list tests", function (assert) {
 
-          var ContactList = Contact.Contacts.instance().iterator();
-          var i = 0;
-          while (ContactList.hasNext()){
-              var contact = ContactList.next();
+            var ContactList = Contact.Contacts.instance().iterator();
+            var i = 0;
+            while (ContactList.hasNext()){
+                var contact = ContactList.next();
 
-              assert.ok($('td#cellFirstName')[i].innerHTML == contact.firstName())
-              assert.ok($('td#cellLastName')[i].innerHTML == contact.lastName());
-
-
-              i++;
-
-          }
-      });
-
-      QUnit.test("first entry tests", function (assert) {
-
-          var ContactList = Contact.Contacts.instance().iterator();
-          var contact = ContactList.next();
+                assert.ok($('td#cellFirstName')[i].innerHTML == contact.firstName())
+                assert.ok($('td#cellLastName')[i].innerHTML == contact.lastName());
 
 
-          assert.ok($('td#cellFirstName')[0].innerHTML == contact.firstName());
-          assert.ok($('td#cellLastName')[0].innerHTML == contact.lastName());
-          assert.ok($('td#cellPhones')[0].innerHTML.includes(contact.phones()[0].number()));
-          assert.ok($('td#cellPhones')[0].innerHTML.includes(contact.phones()[1].number()));
-          assert.ok($('td#cellMails')[0].innerHTML.includes(contact.mails()[0].address()));
-          assert.ok($('td#cellMails')[0].innerHTML.includes(contact.mails()[1].address()));
-          assert.ok($('td#cellTags')[0].innerHTML == contact.tags()[0]);
-      });
+                i++;
 
-      QUnit.test("remove contact tests", function (assert) {
+            }
+        });
 
-          var ContactList = Contact.Contacts.instance().iterator();
-          var buttonfirst = "#button_" + ContactList.first().id();
-          console.log(buttonfirst);
-          $(buttonfirst).click();
+        QUnit.test("first entry tests", function (assert) {
+
+            var ContactList = Contact.Contacts.instance().iterator();
+            var contact = ContactList.next();
 
 
-          var ContactList = Contact.Contacts.instance().iterator();
-          var buttonfirst2 = "#button_" + ContactList.first().id();
+            assert.ok($('td#cellFirstName')[0].innerHTML == contact.firstName());
+            assert.ok($('td#cellLastName')[0].innerHTML == contact.lastName());
+            assert.ok($('td#cellPhones')[0].innerHTML.includes(contact.phones()[0].number()));
+            assert.ok($('td#cellPhones')[0].innerHTML.includes(contact.phones()[1].number()));
+            assert.ok($('td#cellMails')[0].innerHTML.includes(contact.mails()[0].address()));
+            assert.ok($('td#cellMails')[0].innerHTML.includes(contact.mails()[1].address()));
+            assert.ok($('td#cellTags')[0].innerHTML == contact.tags()[0]);
+        });
 
-          assert.ok(buttonfirst != buttonfirst2)
+        QUnit.test("remove contact tests", function (assert) {
 
-      });
+            var ContactList = Contact.Contacts.instance().iterator();
+            var buttonfirst = "#button_" + ContactList.first().id();
+            console.log(buttonfirst);
+            $(buttonfirst).click();
 
-      QUnit.test("sort contact tests", function (assert) {
 
-          $('#button_sort').click();
+            var ContactList = Contact.Contacts.instance().iterator();
+            var buttonfirst2 = "#button_" + ContactList.first().id();
 
-          var ContactList = Contact.Contacts.instance().sort();
+            assert.ok(buttonfirst != buttonfirst2)
 
-          console.log(ContactList[0]);
+        });
 
-          assert.ok($('td#cellFirstName')[0].innerHTML == ContactList[0].firstName());
-          assert.ok($('td#cellLastName')[0].innerHTML == ContactList[0].lastName());
+        QUnit.test("sort contact tests", function (assert) {
 
-      });
+            $('#button_sort').click();
+
+            var ContactList = Contact.Contacts.instance().sort();
+
+            console.log(ContactList[0]);
+
+            assert.ok($('td#cellFirstName')[0].innerHTML == ContactList[0].firstName());
+            assert.ok($('td#cellLastName')[0].innerHTML == ContactList[0].lastName());
+
+        });
     </script>
     <!-- END - Les tests -->
 

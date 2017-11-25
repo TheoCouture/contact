@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Adding Contact</title>
+
+    <link rel="stylesheet" href="css/qunit-2.4.1.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <script src="js/qunit-2.4.1.js"></script>
+    <script src="js/jquery-2.2.4.min.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
+
+    <script src="src/phone.js"></script>
+    <script src="src/mail.js"></script>
+    <script src="src/contact.js"></script>
+    <script src="src/contacts.js"></script>
+    <script src="src/builder.js"></script>
+    <script src="src/contactIterator.js"></script>
+    <script src="src/storage.js"></script>
+
+    <script src="src/view.js"></script>
+    <script src="src/model.js"></script>
+    <script src="src/controller.js"></script>
+
+
+    <!-- BEGIN - La fonction de construction -->
+    <script>
+        var build = function () {
+            var model = new Contact.Model();
+            var view = new Contact.View(model);
+            var controller = new Contact.Controller(model, view);
+        };
+
+        var init = function () {
+
+        }
+    </script>
+    <!-- END - La fonction de construction -->
+
+    <script>
+        $(document).ready(function () {
+            init();
+            build();
+        });
+    </script>
+    <!-- BEGIN - Les tests -->
+    <script>
+        QUnit.test("form tests", function (assert) {
+            assert.ok($('#firstname').is("input"));
+            assert.ok($('#lastname').is("input"));
+            assert.ok($('#mail').is("input"));
+            assert.ok($('#addContact').is("button"));
+            assert.ok($('#cancelContact').is("button"));
+            assert.ok($('#addContact').text() == "OK");
+            assert.ok($('#cancelContact').text() == "Cancel");
+        });
+
+        QUnit.test("adding tests", function (assert) {
+
+            var firstname = "Theo"
+            var lastname = "Couture"
+            var mail = "theo.couture@gmail.com"
+
+            $('#firstname').val(firstname);
+            $('#lastname').val(lastname);
+            $('#mail').val(mail);
+
+            $('#addContact').click();
+
+            var ContactList = Contact.Contacts.instance().iterator();
+            var contact = ContactList.next();
+
+
+            assert.ok(firstname == contact.firstName());
+            assert.ok(lastname == contact.lastName());
+            assert.ok(mail.includes(contact.mails()[0].address()));
+
+        });
+
+        QUnit.test("cancel tests", function (assert) {
+
+            var firstname = "Simon"
+            var lastname = "Herlin"
+            var mail = "herlin.simon@gmail.com"
+
+            $('#firstname').val(firstname);
+            $('#lastname').val(lastname);
+            $('#mail').val(mail);
+
+            $('#cancelContact').click();
+
+            assert.ok(Contact.Contacts.instance().size() == 1);
+
+        });
+
+    </script>
+    <!-- END - Les tests -->
+
+</head>
+<body>
+
+<form>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="firstname">First name</label>
+                <input type="text" class="form-control" id="firstname" placeholder="First name" value="" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="lastname">Last name</label>
+                <input type="text" class="form-control" id="lastname" placeholder="Last name" value="" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="mail">Mail</label>
+                <input type="mail" class="form-control" id="mail" placeholder="Mail" value="" required>
+            </div>
+        </div>
+
+
+
+</form>
+
+<button class="btn btn-primary" id="addContact">OK</button>
+<button class="btn btn-danger" id="cancelContact">Cancel</button>
+
+<script src="src/createcontact.js"></script>
+
+<div id="qunit"></div>
+
+
+
+
+</body>
+</html>
